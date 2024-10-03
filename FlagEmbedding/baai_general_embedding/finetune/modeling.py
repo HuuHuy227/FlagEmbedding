@@ -31,7 +31,7 @@ class BiEncoderModel(nn.Module):
                  use_inbatch_neg: bool = True
                  ):
         super().__init__()
-        self.model = AutoModel.from_pretrained(model_name)
+        self.model = AutoModel.from_pretrained(model_name, trust_remote_code=True)
         self.cross_entropy = nn.CrossEntropyLoss(reduction='mean')
 
         self.normlized = normlized
