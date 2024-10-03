@@ -3,7 +3,18 @@ from transformers.trainer import *
 
 
 def save_ckpt_for_sentence_transformers(ckpt_dir, pooling_mode: str = 'cls', normlized: bool=True):
-    word_embedding_model = models.Transformer(ckpt_dir, trust_remote_code=True)
+    # word_embedding_model = models.Transformer(ckpt_dir)
+    # Prepare arguments with trust_remote_code=True
+    model_args = {"trust_remote_code": True}
+    tokenizer_args = {"trust_remote_code": True}
+    config_args = {"trust_remote_code": True}
+
+    word_embedding_model = models.Transformer(
+        ckpt_dir,
+        model_args=model_args,
+        tokenizer_args=tokenizer_args,
+        config_args=config_args
+    )
     pooling_model = models.Pooling(word_embedding_model.get_word_embedding_dimension(), pooling_mode=pooling_mode)
     if normlized:
         normlize_layer = models.Normalize()
