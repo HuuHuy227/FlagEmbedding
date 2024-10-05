@@ -2,31 +2,24 @@ from sentence_transformers import SentenceTransformer, models
 from transformers.trainer import *
 from transformers import AutoConfig
 
-
 def save_ckpt_for_sentence_transformers(ckpt_dir, pooling_mode: str = 'cls', normlized: bool=True):
-    # Load configuration from the checkpoint directory
+    # word_embedding_model = models.Transformer(ckpt_dir)
+    # Load the configuration first
     config = AutoConfig.from_pretrained(ckpt_dir, trust_remote_code=True)
-
-    # Prepare arguments with trust_remote_code=True
-    model_args = {"trust_remote_code": True}
-    tokenizer_args = {"trust_remote_code": True}
-
-    # Load the model with the correct configuration
+    
+    # Then use this configuration when loading the model
     word_embedding_model = models.Transformer(
         ckpt_dir,
-        config=config,  # Pass the loaded configuration to ensure consistency
-        model_args=model_args,
-        tokenizer_args=tokenizer_args
+        model_args={"trust_remote_code": True, "config": config},
+        tokenizer_args={"trust_remote_code": True},
+        config_args={"trust_remote_code": True}
     )
-
     pooling_model = models.Pooling(word_embedding_model.get_word_embedding_dimension(), pooling_mode=pooling_mode)
-
     if normlized:
         normlize_layer = models.Normalize()
         model = SentenceTransformer(modules=[word_embedding_model, pooling_model, normlize_layer], device='cpu')
     else:
         model = SentenceTransformer(modules=[word_embedding_model, pooling_model], device='cpu')
-
     model.save(ckpt_dir)
 
 
