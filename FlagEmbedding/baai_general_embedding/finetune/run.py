@@ -62,13 +62,13 @@ def main():
         # use_fast=False,
         trust_remote_code=True
     )
-    config = AutoConfig.from_pretrained(
-        model_args.config_name if model_args.config_name else model_args.model_name_or_path,
-        num_labels=num_labels,
-        cache_dir=model_args.cache_dir,
-        trust_remote_code=True
-    )
-    logger.info('Config: %s', config)
+    # config = AutoConfig.from_pretrained(
+    #     model_args.config_name if model_args.config_name else model_args.model_name_or_path,
+    #     num_labels=num_labels,
+    #     cache_dir=model_args.cache_dir,
+    #     trust_remote_code=True
+    # )
+    # logger.info('Config: %s', config)
 
     model = BiEncoderModel(model_name=model_args.model_name_or_path,
                            normlized=training_args.normlized,
