@@ -11,7 +11,7 @@ def save_ckpt_for_sentence_transformers(ckpt_dir, pooling_mode: str = 'cls', nor
         ckpt_dir,
         model_args={"trust_remote_code": True},
         tokenizer_args={"trust_remote_code": True},
-        config_args={"trust_remote_code": True}
+        # config_args={"trust_remote_code": True}
     )
     pooling_model = models.Pooling(word_embedding_model.get_word_embedding_dimension(), pooling_mode=pooling_mode)
     if normlized:
@@ -21,7 +21,7 @@ def save_ckpt_for_sentence_transformers(ckpt_dir, pooling_mode: str = 'cls', nor
         model = SentenceTransformer(modules=[word_embedding_model, pooling_model], device='cpu')
     model.save(ckpt_dir)
 
-
+    
 class BiTrainer(Trainer):
     def _save(self, output_dir: Optional[str] = None, state_dict=None):
         output_dir = output_dir if output_dir is not None else self.args.output_dir

@@ -5,7 +5,7 @@ from typing import Dict, Optional
 import torch
 import torch.distributed as dist
 from torch import nn, Tensor
-from transformers import AutoModel, AutoConfig
+from transformers import AutoModel
 from transformers.file_utils import ModelOutput
 
 logger = logging.getLogger(__name__)
@@ -31,8 +31,7 @@ class BiEncoderModel(nn.Module):
                  use_inbatch_neg: bool = True
                  ):
         super().__init__()
-        config = AutoConfig.from_pretrained(model_name, trust_remote_code=True)
-        self.model = AutoModel.from_pretrained(model_name, config = config, trust_remote_code=True)
+        self.model = AutoModel.from_pretrained(model_name, trust_remote_code=True)
         self.cross_entropy = nn.CrossEntropyLoss(reduction='mean')
 
         self.normlized = normlized
