@@ -9,9 +9,9 @@ def save_ckpt_for_sentence_transformers(ckpt_dir, pooling_mode: str = 'cls', nor
     # Then use this configuration when loading the model
     word_embedding_model = models.Transformer(
         ckpt_dir,
-        model_args={"trust_remote_code": True},
-        tokenizer_args={"trust_remote_code": True},
-        # config_args={"trust_remote_code": True}
+        # model_args={"trust_remote_code": True},
+        # tokenizer_args={"trust_remote_code": True},
+        config_args={"trust_remote_code": True}
     )
     pooling_model = models.Pooling(word_embedding_model.get_word_embedding_dimension(), pooling_mode=pooling_mode)
     if normlized:
